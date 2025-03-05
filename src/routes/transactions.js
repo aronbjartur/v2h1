@@ -1,18 +1,18 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
-import { getFinanceDatabase } from './lib/db.js';
-import { catchErrors } from './lib/handlers.js';
+import { getFinanceDatabase } from '../lib/db.js';
+import { catchErrors } from '../lib/handlers.js';
 import {
   createTransactionValidationMiddleware,
   sanitizationMiddleware,
   xssSanitizationMiddleware,
-} from './lib/validation.js';
+} from '../lib/validation.js';
 
 export const router = express.Router();
 
 /**
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 async function indexRoute(req, res) {
   let message = '';
@@ -34,17 +34,17 @@ async function indexRoute(req, res) {
 }
 
 /**
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 async function newTransactionFormRoute(req, res) {
   res.render('transaction-form', { title: 'Bæta við færslu', data: {} });
 }
 
 /**
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- * @param {import('express').NextFunction} next 
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
 async function validationCheck(req, res, next) {
   const { type, amount, date, description } = req.body;
@@ -63,8 +63,8 @@ async function validationCheck(req, res, next) {
 
 /**
  * Bætir í gagnagrunninn
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
 async function createTransactionRoute(req, res) {
   const { type, amount, date, description } = req.body;

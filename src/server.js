@@ -1,18 +1,20 @@
 //mögulega óþarfi að hafa þetta skjal
 
-import dotenv from 'dotenv';
-dotenv.config();
-
 import express from 'express';
-import { router } from './routes.js';
+import { router } from './routes/routes.js';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 
-const viewsPath = new URL('./views', import.meta.url).pathname;
+const viewsPath = dirname(fileURLToPath(import.meta.url));
+console.log(viewsPath);
 app.set('views', viewsPath);
 app.set('view engine', 'ejs');
+
+app.use(express.static(join(viewsPath, './views')));
 
 app.use('/', router);
 

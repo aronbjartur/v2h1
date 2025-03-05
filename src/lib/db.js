@@ -160,7 +160,7 @@ export class QuestionDatabase {
    * Get all categories from the database.
    * @returns {Promise<Array<import('../types.js').DatabaseCategory>>}
    */
-  async getCategories() {
+  async getTransactions() {
     const query = 'SELECT id, name, slug FROM categories';
     const result = await this.db.query(query);
     if (result) {
@@ -331,7 +331,7 @@ let qdb = null;
  * Return a singleton question database instance.
  * @returns {QuestionDatabase | null}
  */
-export function getQuestionDatabase() {
+export function getFinanceDatabase() {
   if (qdb) {
     return qdb;
   }

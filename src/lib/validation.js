@@ -1,8 +1,8 @@
 import { body } from 'express-validator';
 import xss from 'xss';
-import { getQuestionDatabase } from './db.js';
+import { getFinanceDatabase } from './db.js';
 
-export function createQuestionValidationMiddleware() {
+export function createTransactionValidationMiddleware() {
   return [
     body('question')
       .isString()
@@ -12,7 +12,7 @@ export function createQuestionValidationMiddleware() {
         'Spurning verður að vera að minnsta kosti 10 stafir, að hámarki 500'
       ),
     body('category').custom(async (value) => {
-      const categories = (await getQuestionDatabase()?.getCategories()) ?? [];
+      const categories = (await getFinanceDatabase()?.getTransactions()) ?? [];
 
       if (!categories.find((c) => c.id.toString() === value)) {
         throw new Error('Flokkur verður að vera gildur');
