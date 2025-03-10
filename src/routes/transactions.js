@@ -11,8 +11,8 @@ import {
 export const router = express.Router();
 
 /**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
+ * GET /
+ * Render the transactions list for the logged-in user.
  */
 async function indexRoute(req, res) {
   let message = '';
@@ -33,22 +33,15 @@ async function indexRoute(req, res) {
   });
 }
 
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- */
+
 async function newTransactionFormRoute(req, res) {
   res.render('transaction-form', { title: 'Bæta við færslu', data: {} });
 }
 
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- */
-async function validationCheck(req, res, next) {
-  const { type, amount, date, description } = req.body;
-  const data = { type, amount, date, description };
+
+async function validationCheckMiddleware(req, res, next) {
+  const { transaction_type, category, amount, date, description } = req.body;
+  const data = { transaction_type, category, amount, date, description };
   const validation = validationResult(req);
 
   if (!validation.isEmpty()) {
@@ -61,18 +54,15 @@ async function validationCheck(req, res, next) {
   return next();
 }
 
-/**
- * Bætir í gagnagrunninn
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- */
+
 async function createTransactionRoute(req, res) {
-  const { type, amount, date, description } = req.body;
-  const data = { type, amount, date, description };
+  const { transaction_type, category, amount, date, description } = req.body;
+  const data = { transaction_type, category, amount, date, description };
 
   const created = await getFinanceDatabase()?.createTransaction(
     req.user.id,
-    type,
+    transaction_type,
+    category,
     amount,
     date,
     description
@@ -87,13 +77,14 @@ async function createTransactionRoute(req, res) {
   return res.redirect('/');
 }
 
+// Routes
 router.get('/', catchErrors(indexRoute));
 router.get('/transactions/new', catchErrors(newTransactionFormRoute));
 router.post(
   '/transactions/new',
   createTransactionValidationMiddleware(),
   xssSanitizationMiddleware(),
-  catchErrors(validationCheck),
+  catchErrors(validationCheckMiddleware),
   sanitizationMiddleware(),
   catchErrors(createTransactionRoute)
 );
