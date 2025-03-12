@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS categories;
 
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
@@ -15,8 +16,12 @@ CREATE TABLE transactions (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   transaction_type VARCHAR(50) NOT NULL, -- inn og utgjöld
-  category VARCHAR(50) NOT NULL, -- eins og matvörur, húsnæði, skólar, bílar eða ehv þannig
+  category VARCHAR(50) NOT NULL references categories(name), -- eins og matvörur, húsnæði, skólar, bílar eða ehv þannig
   amount NUMERIC(10,2) NOT NULL,
   date DATE NOT NULL,
   description TEXT
+);
+CREATE TABLE categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL, -- eins og matvörur, húsnæði, skólar, bílar eða ehv þannig
 );
