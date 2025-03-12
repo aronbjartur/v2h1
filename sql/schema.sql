@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS accounts;
 DROP TABLE IF EXISTS payment_methods;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS categories;
 
 -- notendur
 CREATE TABLE IF NOT EXISTS users (
@@ -49,6 +50,7 @@ CREATE TABLE IF NOT EXISTS transactions (
   description TEXT
 );
 
+
 --mánaðar takmark annig eyðsla er ekki of mikil
 CREATE TABLE IF NOT EXISTS budgets (
   id SERIAL PRIMARY KEY,
@@ -57,3 +59,4 @@ CREATE TABLE IF NOT EXISTS budgets (
   monthly_limit NUMERIC(10,2) NOT NULL,
   created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
